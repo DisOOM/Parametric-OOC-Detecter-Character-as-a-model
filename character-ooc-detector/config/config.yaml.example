@@ -1,0 +1,46 @@
+# Character OOC Detector 配置文件示例
+# 复制此文件为 config.yaml 并填入你的配置
+
+# OpenAI API 配置（用于标签提取和样本生成）
+openai:
+  api_key: ""  # 在此填入你的OpenAI API密钥
+  model: "gemini-2.5-pro"  # 选你喜欢的模型
+  base_url: ""  # 可选：自定义API端点（如使用代理）
+  
+# 或者使用环境变量（优先级更高）
+# export OPENAI_API_KEY="your-key-here"
+
+# 训练配置
+training:
+  # 预训练模型选择（可选值见下方）
+  model_name: "microsoft/deberta-v3-base"  # 默认模型（184M参数）
+  
+  # 可选模型列表（按参数量排序）：
+  # - "microsoft/deberta-v3-small"   (~  44M) - 轻量快速
+  # - "microsoft/deberta-v3-base"    (~ 184M) - 平衡性能 [推荐]
+  # - "microsoft/deberta-v3-large"   (~ 434M) - 高性能
+  # - "roberta-base"                 (~ 125M) - 经典选择
+  # - "roberta-large"                (~ 355M) - 大规模
+  
+  output_dir: "./checkpoints"  # 模型保存目录
+  num_epochs: 3
+  batch_size: 8
+  learning_rate: 2.0e-5
+  weight_decay: 0.01  # L2正则化系数（防止过拟合，推荐0.01-0.1）
+  max_length: 512
+  use_bf16: true  # 使用BF16混合精度（节省约50%显存，推荐GPU训练）
+  seed: 42  # 随机种子（保证训练可复现，设为null禁用）
+  early_stopping_patience: 3  # 早停patience（验证loss N个epoch不改善则停止）
+  dropout_rate: 0.1  # Dropout比率（防止过拟合，推荐0.1-0.3）
+  
+# 样本生成配置
+sample_generation:
+  num_pairs: 100  # 默认生成的偏好对数量（可按需调整：50/100/200/500）
+  num_contexts: 30  # 生成的上下文数量
+  temperature: 0.7  # LLM生成温度
+  allow_append: true  # 是否允许追加到现有数据文件
+  
+# 评分配置
+scoring:
+  threshold: 0.0  # OOC判定阈值
+  threshold_per_dim: -0.5  # 各维度阈值

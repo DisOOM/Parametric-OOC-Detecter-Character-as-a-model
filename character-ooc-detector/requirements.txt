@@ -1,0 +1,18 @@
+# 核心依赖
+torch>=2.0.0
+transformers>=4.35.0
+datasets>=2.14.0
+accelerate>=0.24.0
+peft>=0.6.0
+trl>=0.7.0
+
+# 数据处理
+numpy>=1.24.0
+pandas>=2.0.0
+
+# OpenAI API (用于Tag提取)
+openai>=1.0.0
+
+# 工具
+tqdm>=4.65.0
+pyyaml>=6.0  # 配置文件加载
